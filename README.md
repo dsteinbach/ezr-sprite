@@ -61,5 +61,5 @@ $generate_additional_sizes:     "help-icon" 33,
 ```
 <i class="ezr-sprite my-app-img-avatar"></i> Avatar image displayed at original 1x size
 
-<i class="ezr-sprite my-app-img-avatar-25"></i> Avatar image constrained to 25px width by N height
+<i class="ezr-sprite my-app-img-avatar-25"></i> Avatar image constrained to 25px width.
 ```
