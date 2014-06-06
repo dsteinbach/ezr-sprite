@@ -63,3 +63,6 @@ $generate_additional_sizes:     "help-icon" 33,
 
 <i class="ezr-sprite my-app-img-avatar-25"></i> Avatar image constrained to 25px width.
 ```
+
+####Note
+Some hardcoding of folder names have been made in ezr-sprite. Feel free to copy and modify this file as needed in your own project.
