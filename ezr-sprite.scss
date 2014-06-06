@@ -1,4 +1,4 @@
-@mixin ezrSprite($folderName, $spriteParentClass, $spriteClassPrepend, $generate_sizes, $spacing: 0) {
+@mixin ezrSprite($folderName, $spriteParentClass, $spriteClassPrepend, $generate_sizes: false, $spacing: 0) {
     $icons: sprite-map($folderName + '/*.png', $spacing: $spacing);
     $icons-2x: sprite-map($folderName + '-2x/*.png', $spacing: $spacing);
 
@@ -16,7 +16,9 @@
                 width: image-width(sprite-file($icons, $sprite));
             }
         }
-        @include createAdditionalSizes($icons, false, $folderName, $spriteClassPrepend, $generate_sizes);
+        @if $generate_sizes {
+            @include createAdditionalSizes($icons, false, $folderName, $spriteClassPrepend, $generate_sizes);
+        }
     }
 
     // retina sprite
@@ -29,7 +31,9 @@
                     background-position: round(nth(sprite-position($icons-2x, $sprite), 1) / 2) round(nth(sprite-position($icons-2x, $sprite), 2) / 2);
                 }
             }
-            @include createAdditionalSizes($icons-2x, false, $folderName, $spriteClassPrepend, $generate_sizes);
+            @if $generate_sizes {
+                @include createAdditionalSizes($icons-2x, false, $folderName, $spriteClassPrepend, $generate_sizes);
+            }
         }
     }
 
@@ -42,7 +46,9 @@
                 background-image: url('/images/#{$folderName}/#{$sprite}.png');
             }
         }
-        @include createAdditionalSizes($icons, true, $folderName, $spriteClassPrepend, $generate_sizes);
+        @if $generate_sizes {
+            @include createAdditionalSizes($icons, true, $folderName, $spriteClassPrepend, $generate_sizes);
+        }
     }
 }
 
