@@ -1,0 +1,8 @@
+@import 'ezr-sprite';
+
+$generate_additional_sizes:     "help-icon" 25,
+                                "avatar" 65,
+                                "settings" 16;
+
+
+@include ezrSprite('sprite', '.ezr-sprite', '.my-app-img-', $generate_additional_sizes, 5);

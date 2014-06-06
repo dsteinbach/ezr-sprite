@@ -1,0 +1,74 @@
+@mixin ezrSprite($folderName, $spriteParentClass, $spriteClassPrepend, $generate_sizes, $spacing: 0) {
+    $icons: sprite-map($folderName + '/*.png', $spacing: $spacing);
+    $icons-2x: sprite-map($folderName + '-2x/*.png', $spacing: $spacing);
+
+    // non-retina sprite
+    #{$spriteParentClass} {
+        @include inline-block;
+        background-image: sprite-url($icons);
+        background-repeat:no-repeat;
+        overflow: hidden;
+
+        @each $sprite in sprite_names($icons) {
+            &#{$spriteClassPrepend}#{$sprite} {
+                background-position: sprite-position($icons, $sprite);
+                height: image-height(sprite-file($icons, $sprite));
+                width: image-width(sprite-file($icons, $sprite));
+            }
+        }
+        @include createAdditionalSizes($icons, false, $folderName, $spriteClassPrepend, $generate_sizes);
+    }
+
+    // retina sprite
+    @media (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 3/2), (min--moz-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 144dppx) {
+        body #{$spriteParentClass} {
+            background-image: sprite-url($icons-2x);
+            background-size: (image-width(sprite-path($icons-2x)) / 2) (image-height(sprite-path($icons-2x)) / 2);
+            @each $sprite in sprite_names($icons-2x) {
+                &#{$spriteClassPrepend}#{$sprite} {
+                    background-position: round(nth(sprite-position($icons-2x, $sprite), 1) / 2) round(nth(sprite-position($icons-2x, $sprite), 2) / 2);
+                }
+            }
+            @include createAdditionalSizes($icons-2x, false, $folderName, $spriteClassPrepend, $generate_sizes);
+        }
+    }
+
+    // old ie defaults to individual images - depends on Paul Irish's IE detection 
+    .lt-ie9 #{$spriteParentClass} {
+        background-position:0 0 !important;
+        background-size:100% !important; // for debugging IE outside of IE
+        @each $sprite in sprite_names($icons) {
+            &#{$spriteClassPrepend}#{$sprite} {
+                background-image: url('/images/#{$folderName}/#{$sprite}.png');
+            }
+        }
+        @include createAdditionalSizes($icons, true, $folderName, $spriteClassPrepend, $generate_sizes);
+    }
+}
+
+@mixin createAdditionalSizes($map, $isOldIE, $folderName, $spriteClassPrepend, $generate_sizes){
+    $spriteWidth: image-width(sprite-path($map));
+    $spriteHeight: image-height(sprite-path($map));
+
+    @each $i in $generate_sizes {
+        $sprite: nth($i,1);
+        $newWidth: nth($i,2) + 0px;
+        $origHeight: image-height(sprite-file($map, $sprite));
+        $origWidth: image-width(sprite-file($map, $sprite));
+        $origX: nth(sprite-position($map, $sprite), 1);
+        $origY: nth(sprite-position($map, $sprite), 2);
+        $ratio: ($newWidth / $origWidth) + 0;
+
+        &#{$spriteClassPrepend}#{$sprite}-#{nth($i,2)} {
+            background-size: ceil($spriteWidth * $ratio) + 0px ceil($spriteHeight * $ratio) + 0px;
+            background-position: floor($origX * $ratio) floor($origY * $ratio);
+            height: round(( $newWidth * $origHeight) / $origWidth) + 0px;
+            width: ($newWidth) + 0px;
+            @if $isOldIE {
+                background-image: url('/images/#{$folderName}/#{$sprite}.png');
+                filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/#{$folderName}/#{$sprite}.png', sizingMethod='scale');
+                -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/#{$folderName}/#{$sprite}.png', sizingMethod='scale')";
+            }
+        }
+    }
+}
