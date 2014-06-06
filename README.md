@@ -5,7 +5,7 @@ This compass script will generate sprite css for retina, non-retina and old IE. 
 ###Instructions
 
 1. Create sub-folders in your image directory called `sprite` and `sprite-2x`.
-2. Create an identical image for each except one of the 2x larger in dimensions.
+2. Create identical images for each directory except images in the `sprite-2x` must be exactly twice the size.
 3. Setup your scss code as shown in `example.scss`
 4. Run `compass watch`
 
