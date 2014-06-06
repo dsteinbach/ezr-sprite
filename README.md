@@ -1,6 +1,6 @@
 #ezr-sprite
 
-This compass script will generate sprite css for retina, non-retina and old IE. Whenever an image is added to a subfolder, classnames will automatically be generated and ready to use.
+This compass script will generate sprite css for retina, non-retina and old IE. Whenever an image is added to a subfolder, classnames will automatically be generated and ready to use. You can also generate icons of varying sizes without bloating the sprite by specifying the image and new size in the `additionalSizes` argument.
 
 ###Instructions
 
